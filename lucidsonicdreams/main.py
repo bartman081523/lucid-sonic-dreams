@@ -28,7 +28,7 @@ import imageio
 torch.backends.cudnn.benchmark = True
 
 # Dirty global variable :)
-all_frames = np.array()
+all_frames = np.empty(shape=100000)
 
 def import_stylegan_torch():
     # Clone Official StyleGAN2-ADA-pytorch Repository
