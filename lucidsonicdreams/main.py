@@ -617,6 +617,7 @@ class LucidSonicDream:
             #final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
             
             # Dirty global varible hacks :)
+            print(type(final_image)
             all_frames.append(final_image)
         
         del image_batch
@@ -655,6 +656,8 @@ class LucidSonicDream:
                   custom_effects: list = None):
     '''Full pipeline of video generation'''
 
+    all_frames = []
+    
     # Raise exception if speed_fpm > fps*60
     if speed_fpm > fps*60:
       sys.exit('speed_fpm must not be greater than fps * 60')
