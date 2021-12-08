@@ -28,7 +28,7 @@ import imageio
 torch.backends.cudnn.benchmark = True
 
 # Dirty global variable :)
-all_frames = []
+all_frames = np.array()
 
 def import_stylegan_torch():
     # Clone Official StyleGAN2-ADA-pytorch Repository
@@ -617,7 +617,7 @@ class LucidSonicDream:
             #final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
             
             # Dirty global varible hacks :)
-            all_frames.append(np.array(final_image))
+            np.append(all_frames, np.array(final_image))
         
         del image_batch
         del noise_batch
