@@ -617,7 +617,7 @@ class LucidSonicDream:
             #final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
             
             np_final_image = np.array(final_image)
-            np.append(all_frames, np_final_image)
+            all_frames[i] = np_final_image
         
         del image_batch
         del noise_batch
