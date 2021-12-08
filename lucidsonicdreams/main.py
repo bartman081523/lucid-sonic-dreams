@@ -616,9 +616,9 @@ class LucidSonicDream:
             #        .zfill(len(str(max_frame_index)))
             #final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
             
-            # Dirty global varible hacks :)
             np_final_image = np.array(final_image)
             print(np_final_image.shape)
+            print(type(np_final_image))
             np.append(all_frames, np_final_image)
         
         del image_batch
