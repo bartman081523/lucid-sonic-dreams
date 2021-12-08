@@ -623,6 +623,7 @@ class LucidSonicDream:
         del noise_batch
         
     print(all_frames.ndim)
+    
     return all_frames
 
 
@@ -753,7 +754,7 @@ class LucidSonicDream:
     # Generate frames
     print('\nHallucinating... \n')
     all_frames = self.generate_frames()
-
+    print(all_frames.ndim)
     # Load output audio
     if output_audio:
       wav_output, sr_output = librosa.load(output_audio, 
