@@ -618,7 +618,7 @@ class LucidSonicDream:
             
             # Dirty global varible hacks :)
             print(type(final_image))
-            all_frames.append(numpy.array(final_image))
+            all_frames.append(np.array(final_image))
         
         del image_batch
         del noise_batch
