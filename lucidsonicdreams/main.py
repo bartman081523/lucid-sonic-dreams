@@ -551,7 +551,7 @@ class LucidSonicDream:
     batch_size = self.batch_size
     num_frame_batches = int(len(self.noise) / batch_size)
 
-    all_frames = np.empty(shape=num_frame_batches)
+    all_frames = np.empty(shape=[num_frame_batches, resolution, resolution, 3])
 
     if self.use_tf:
         Gs_syn_kwargs = {'output_transform': {'func': self.convert_images_to_uint8, 
@@ -619,11 +619,13 @@ class LucidSonicDream:
             np_final_image = np.array(final_image)
             print(np_final_image.shape)
             print(type(np_final_image))
+            print(np_final_image.ndim)
             np.append(all_frames, np_final_image)
         
         del image_batch
         del noise_batch
-
+        
+    print(all_frames.ndim)
     return all_frames
 
 
