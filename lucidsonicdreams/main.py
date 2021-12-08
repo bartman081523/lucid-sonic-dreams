@@ -27,9 +27,6 @@ import imageio
 # For speed
 torch.backends.cudnn.benchmark = True
 
-# Dirty global variable :)
-all_frames = np.empty(shape=100000)
-
 def import_stylegan_torch():
     # Clone Official StyleGAN2-ADA-pytorch Repository
     if not os.path.exists('stylegan2'):
@@ -549,10 +546,15 @@ class LucidSonicDream:
   def generate_frames(self):
     '''Generate GAN output for each frame of video'''
 
+    
+
     file_name = self.file_name
     resolution = self.resolution
     batch_size = self.batch_size
     num_frame_batches = int(len(self.noise) / batch_size)
+
+    all_frames = np.empty(shape=num_frame_batches)
+
     if self.use_tf:
         Gs_syn_kwargs = {'output_transform': {'func': self.convert_images_to_uint8, 
                                           'nchw_to_nhwc': True},
@@ -621,6 +623,8 @@ class LucidSonicDream:
         
         del image_batch
         del noise_batch
+
+        return all_frames
 
 
   def hallucinate(self,
@@ -749,7 +753,7 @@ class LucidSonicDream:
 
     # Generate frames
     print('\nHallucinating... \n')
-    self.generate_frames()
+    all_frames = self.generate_frames()
 
     # Load output audio
     if output_audio:
