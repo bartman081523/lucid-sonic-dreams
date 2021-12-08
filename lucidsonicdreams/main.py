@@ -546,8 +546,6 @@ class LucidSonicDream:
   def generate_frames(self):
     '''Generate GAN output for each frame of video'''
 
-    
-
     file_name = self.file_name
     resolution = self.resolution
     batch_size = self.batch_size
@@ -624,7 +622,7 @@ class LucidSonicDream:
         del image_batch
         del noise_batch
 
-        return all_frames
+    return all_frames
 
 
   def hallucinate(self,
