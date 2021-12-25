@@ -555,6 +555,8 @@ class LucidSonicDream:
     num_frame_batches = int(len(self.noise) / batch_size)
     max_frame_index = num_frame_batches * batch_size + batch_size  
 
+    on_disk = frame_batch_size is not None & max_frame_index <= frame_batch_size
+
     if self.use_tf:
         Gs_syn_kwargs = {'output_transform': {'func': self.convert_images_to_uint8, 
                                           'nchw_to_nhwc': True},
@@ -566,7 +568,7 @@ class LucidSonicDream:
     # Set-up temporary frame directory
     # Fixme: Save images to RAM
 
-    if frame_batch_size != None & max_frame_index <= frame_batch_size:
+    if on_disk:
       self.frames_dir = file_name.split('.mp4')[0] + '_frames'
       if os.path.exists(self.frames_dir):
           shutil.rmtree(self.frames_dir)
@@ -581,7 +583,7 @@ class LucidSonicDream:
     num_batches = 0
     frame_count = 0
     for i in tqdm(range(num_frame_batches), position=0, leave=True):
-        if frame_batch_size != None & max_frame_index <= frame_batch_size:
+        if on_disk:
             # if batch size met, frames write to disk, reset array 
             # Save. Include leading zeros in file name to keep alphabetical order
           for f in tqdm(range(frame_count), position=0, leave=True):
@@ -638,13 +640,13 @@ class LucidSonicDream:
         del noise_batch
     
     # write remaining frames
-    if frame_batch_size != None & max_frame_index <= frame_batch_size:
+    if on_disk:
       for f in tqdm(range(frame_count), position=0, leave=True):
         file_name = str(num_batches*frame_batch_size + f)\
                 .zfill(len(str(max_frame_index)))
         Image.fromarray(all_frames[f], 'RGB').save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
-    if frame_batch_size != None & max_frame_index <= frame_batch_size:
+    if on_disk:
       return all_frames
     
     return None
