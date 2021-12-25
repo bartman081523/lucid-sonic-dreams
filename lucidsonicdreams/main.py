@@ -575,7 +575,7 @@ class LucidSonicDream:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Generate frames
-    frame_cpunt = 0
+    frame_count = 0
     for i in tqdm(range(num_frame_batches), position=0, leave=True):
         if frame_count == frame_batch_size:
             # if batch size met, frames write to disk, reset array 
