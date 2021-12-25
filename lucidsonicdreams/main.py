@@ -583,7 +583,7 @@ class LucidSonicDream:
     if on_disk:
       all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
     else:
-      all_frames = np.empty(shape=[max_frame_index, resolution, resolution, 3], dtype=np.uint8)
+      all_frames = np.empty(shape=[num_frame_batches, resolution, resolution, 3], dtype=np.uint8)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
