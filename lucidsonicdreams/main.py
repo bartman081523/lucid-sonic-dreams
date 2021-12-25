@@ -587,7 +587,7 @@ class LucidSonicDream:
     num_batches = 0
     frame_count = 0
     for i in tqdm(range(num_frame_batches), position=0, leave=True):
-        if on_disk:
+        if on_disk and frame_count == frame_batch_size:
             # if batch size met, frames write to disk, reset array 
             # Save. Include leading zeros in file name to keep alphabetical order
           for f in tqdm(range(frame_count), position=0, leave=True):
@@ -598,7 +598,6 @@ class LucidSonicDream:
           num_batches += 1
           frame_count = 0
           all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
-
 
         # Obtain batches of Noise and Class vectors based on batch_size
         noise_batch = np.array(self.noise[i*batch_size:(i+1)*batch_size])
