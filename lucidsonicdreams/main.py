@@ -587,6 +587,7 @@ class LucidSonicDream:
                     .zfill(len(str(max_frame_index)))
             final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
+          num_batches += 1
           frame_count = 0
           all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
 
