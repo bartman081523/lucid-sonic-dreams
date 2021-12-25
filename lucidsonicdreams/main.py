@@ -551,6 +551,7 @@ class LucidSonicDream:
     resolution = self.resolution
     batch_size = self.batch_size
     frame_batch_size = self.frame_batch_size
+    max_frame_index = num_frame_batches * batch_size + batch_size
 
     num_frame_batches = int(len(self.noise) / batch_size)
   
@@ -584,7 +585,6 @@ class LucidSonicDream:
             # if batch size met, frames write to disk, reset array 
             # Save. Include leading zeros in file name to keep alphabetical order
           for f in tqdm(range(frame_count), position=0, leave=True):
-            max_frame_index = num_frame_batches * batch_size + batch_size
             file_name = str(num_batches*frame_batch_size + f)\
                     .zfill(len(str(max_frame_index)))
             Image.fromarray(all_frames[f], 'RGB').save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
@@ -640,12 +640,14 @@ class LucidSonicDream:
     # write remaining frames
     if frame_batch_size != None:
       for f in tqdm(range(frame_count), position=0, leave=True):
-        max_frame_index = num_frame_batches * batch_size + batch_size
         file_name = str(num_batches*frame_batch_size + f)\
                 .zfill(len(str(max_frame_index)))
         Image.fromarray(all_frames[f], 'RGB').save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
-    return all_frames
+    if max_frame_index <= frame_batch_size:
+      return all_frames
+    
+    return None
 
 
   def hallucinate(self,
@@ -777,7 +779,7 @@ class LucidSonicDream:
     # Generate frames
     print('\nHallucinating... \n')
     all_frames = self.generate_frames()
-    print(all_frames.ndim)
+
     # Load output audio
     if output_audio:
       wav_output, sr_output = librosa.load(output_audio, 
@@ -788,7 +790,7 @@ class LucidSonicDream:
     # Write temporary movie file
     print('\nGenerating movie...\n')
 
-    if frame_batch_size == None:
+    if all_frames == None: # If frames not passed back, then they're in folder
       imageio.mimwrite('tmp.mp4', all_frames, quality=8, fps=self.sr/self.frame_duration)
       video = mpy.VideoFileClip('tmp.mp4')
     else:
