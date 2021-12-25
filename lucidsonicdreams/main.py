@@ -601,7 +601,8 @@ class LucidSonicDream:
 
           num_batches += 1
           frame_count = 0
-          all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
+          # Don't need to actually do this, we just use the same array and overwrite it
+          # all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
 
         # Obtain batches of Noise and Class vectors based on batch_size
         noise_batch = np.array(self.noise[i*batch_size:(i+1)*batch_size])
