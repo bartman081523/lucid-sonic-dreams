@@ -773,16 +773,19 @@ class LucidSonicDream:
 
     # Write temporary movie file
     print('\nGenerating movie...\n')
-    imageio.mimwrite('tmp.mp4', all_frames, quality=8, fps=self.sr/self.frame_duration)
+
+    if frame_batch_size == None:
+      imageio.mimwrite('tmp.mp4', all_frames, quality=8, fps=self.sr/self.frame_duration)
+      video = mpy.VideoFileClip('tmp.mp4')
+    else:
+      video = mpy.ImageSequenceClip(self.frames_dir, fps=self.sr/self.frame_duration)
 
     # Write temporary audio file
-    soundfile.write('tmp.wav',wav_output, sr_output)
+    soundfile.write('tmp.wav', wav_output, sr_output)
 
     # Mix audio & video
     audio = mpy.AudioFileClip('tmp.wav', fps = self.sr*2)
-    video = mpy.VideoFileClip('tmp.mp4')
-    #video = mpy.ImageSequenceClip(all_frames, fps=self.sr/self.frame_duration)
-   
+    
     video = video.set_audio(audio)
     video.write_videofile(file_name,audio_codec='aac')
 
@@ -791,8 +794,8 @@ class LucidSonicDream:
     os.remove('tmp.mp4')
 
     # By default, delete temporary frames directory
-    #if not save_frames: 
-    # shutil.rmtree(self.frames_dir)
+    if not save_frames: 
+      shutil.rmtree(self.frames_dir)
 
 
 class EffectsGenerator:
