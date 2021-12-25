@@ -816,7 +816,7 @@ class LucidSonicDream:
 
     # Delete temporary audio file
     os.remove('tmp.wav')
-    if not np.any(all_frames):
+    if np.any(all_frames):
       os.remove('tmp.mp4')
 
     # By default, delete temporary frames directory
