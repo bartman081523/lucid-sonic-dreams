@@ -583,7 +583,7 @@ class LucidSonicDream:
             # Save. Include leading zeros in file name to keep alphabetical order
           for f in tqdm(range(frame_count), position=0, leave=True):
             max_frame_index = num_frame_batches * batch_size + batch_size
-            file_name = str(num_batches + frame_count)\
+            file_name = str(num_batches*frame_batch_size + f)\
                     .zfill(len(str(max_frame_index)))
             final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
@@ -640,7 +640,7 @@ class LucidSonicDream:
     if frame_batch_size != None:
       for f in tqdm(range(frame_count), position=0, leave=True):
         max_frame_index = num_frame_batches * batch_size + batch_size
-        file_name = str(num_frame_batches + frame_count)\
+        file_name = str(num_frame_batches*frame_batch_size + f)\
                 .zfill(len(str(max_frame_index)))
         final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
