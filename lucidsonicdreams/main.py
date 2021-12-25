@@ -555,6 +555,9 @@ class LucidSonicDream:
     num_frame_batches = int(len(self.noise) / batch_size)
     max_frame_index = num_frame_batches * batch_size + batch_size  
 
+    print(frame_batch_size)
+    print(max_frame_index)
+
     on_disk = bool(frame_batch_size != None) & bool(max_frame_index <= frame_batch_size)
     print("Storing frames on disk:\t" + str(on_disk))
 
