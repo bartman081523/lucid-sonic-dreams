@@ -823,6 +823,8 @@ class LucidSonicDream:
     if not save_frames: 
       shutil.rmtree(self.frames_dir)
 
+    del all_frames
+
 
 class EffectsGenerator:
   def __init__(self, 
