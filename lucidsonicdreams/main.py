@@ -558,7 +558,7 @@ class LucidSonicDream:
     print(frame_batch_size)
     print(max_frame_index)
 
-    on_disk = bool(frame_batch_size != None) & bool(max_frame_index <= frame_batch_size)
+    on_disk = not(bool(frame_batch_size != None) & bool(max_frame_index <= frame_batch_size))
     print("Storing frames on disk:\t" + str(on_disk))
 
     if self.use_tf:
