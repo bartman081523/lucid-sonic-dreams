@@ -803,7 +803,8 @@ class LucidSonicDream:
 
     # Delete temporary audio file
     os.remove('tmp.wav')
-    os.remove('tmp.mp4')
+    if frame_batch_size == None:
+      os.remove('tmp.mp4')
 
     # By default, delete temporary frames directory
     if not save_frames: 
