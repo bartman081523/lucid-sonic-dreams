@@ -575,6 +575,7 @@ class LucidSonicDream:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Generate frames
+    num_batches = 0
     frame_count = 0
     for i in tqdm(range(num_frame_batches), position=0, leave=True):
         if frame_count == frame_batch_size:
@@ -582,7 +583,7 @@ class LucidSonicDream:
             # Save. Include leading zeros in file name to keep alphabetical order
           for f in tqdm(range(frame_count), position=0, leave=True):
             max_frame_index = num_frame_batches * batch_size + batch_size
-            file_name = str(image_index)\
+            file_name = str(num_batches + frame_count)\
                     .zfill(len(str(max_frame_index)))
             final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
@@ -634,6 +635,14 @@ class LucidSonicDream:
         del image_batch
         del noise_batch
     
+    # write remaining frames
+    if frame_batch_size != None:
+      for f in tqdm(range(frame_count), position=0, leave=True):
+        max_frame_index = num_frame_batches * batch_size + batch_size
+        file_name = str(num_frame_batches + frame_count)\
+                .zfill(len(str(max_frame_index)))
+        final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
+
     return all_frames
 
 
