@@ -579,7 +579,11 @@ class LucidSonicDream:
       os.makedirs(self.frames_dir)
 
 #TODO: Create "model resolution", maybe I can detect this directly from the model?? That way we only resize if the model resolution is different
-    all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
+
+    if on_disk:
+      all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
+    else:
+      all_frames = np.empty(shape=[max_frame_index, resolution, resolution, 3], dtype=np.uint8)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
