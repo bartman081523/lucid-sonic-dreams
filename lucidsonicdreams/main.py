@@ -620,7 +620,7 @@ class LucidSonicDream:
             else:
                 noise_batch = torch.from_numpy(noise_batch).to(device)
                 w_batch = self.Gs.mapping(noise_batch, class_batch)
-                with torch.no_grad():
+                with torch.no_grad(): # Can this be sped up? https://developer.nvidia.com/blog/accelerating-inference-up-to-6x-faster-in-pytorch-with-torch-tensorrt/
                     image_batch = self.Gs.synthesis(w_batch, **Gs_syn_kwargs).detach().cpu()
 
         # For each image in generated batch: apply effects, resize, and save
@@ -816,7 +816,7 @@ class LucidSonicDream:
 
     # Delete temporary audio file
     os.remove('tmp.wav')
-    if frame_batch_size == None:
+    if not np.any(all_frames):
       os.remove('tmp.mp4')
 
     # By default, delete temporary frames directory
