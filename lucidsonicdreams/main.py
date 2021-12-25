@@ -586,7 +586,7 @@ class LucidSonicDream:
             max_frame_index = num_frame_batches * batch_size + batch_size
             file_name = str(num_batches*frame_batch_size + f)\
                     .zfill(len(str(max_frame_index)))
-            all_frames[f].save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
+            Image.fromarray(all_frames[f], 'RGB').save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
           num_batches += 1
           frame_count = 0
@@ -643,7 +643,7 @@ class LucidSonicDream:
         max_frame_index = num_frame_batches * batch_size + batch_size
         file_name = str(num_batches*frame_batch_size + f)\
                 .zfill(len(str(max_frame_index)))
-        all_frames[f].save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
+        Image.fromarray(all_frames[f], 'RGB').save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
     return all_frames
 
