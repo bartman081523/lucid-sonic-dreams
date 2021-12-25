@@ -571,9 +571,9 @@ class LucidSonicDream:
 
     # Set-up temporary frame directory
     # Fixme: Save images to RAM
-
+    self.frames_dir = file_name.split('.mp4')[0] + '_frames'
+    
     if on_disk:
-      self.frames_dir = file_name.split('.mp4')[0] + '_frames'
       if os.path.exists(self.frames_dir):
           shutil.rmtree(self.frames_dir)
       os.makedirs(self.frames_dir)
