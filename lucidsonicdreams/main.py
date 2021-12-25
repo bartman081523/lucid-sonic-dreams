@@ -551,10 +551,10 @@ class LucidSonicDream:
     resolution = self.resolution
     batch_size = self.batch_size
     frame_batch_size = self.frame_batch_size
-    max_frame_index = num_frame_batches * batch_size + batch_size
-
+    
     num_frame_batches = int(len(self.noise) / batch_size)
-  
+    max_frame_index = num_frame_batches * batch_size + batch_size  
+
     if self.use_tf:
         Gs_syn_kwargs = {'output_transform': {'func': self.convert_images_to_uint8, 
                                           'nchw_to_nhwc': True},
