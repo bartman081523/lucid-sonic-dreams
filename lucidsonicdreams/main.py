@@ -570,6 +570,7 @@ class LucidSonicDream:
           shutil.rmtree(self.frames_dir)
       os.makedirs(self.frames_dir)
 
+#TODO: Create "model resolution", maybe I can detect this directly from the model?? That way we only resize if the model resolution is different
     all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -642,7 +643,7 @@ class LucidSonicDream:
     if frame_batch_size != None:
       for f in tqdm(range(frame_count), position=0, leave=True):
         max_frame_index = num_frame_batches * batch_size + batch_size
-        file_name = str(num_frame_batches*frame_batch_size + f)\
+        file_name = str(num_batches*frame_batch_size + f)\
                 .zfill(len(str(max_frame_index)))
         final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
