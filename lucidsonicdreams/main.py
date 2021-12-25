@@ -472,6 +472,7 @@ class LucidSonicDream:
 
       # UPDATE CLASSES #
 
+      # TODO: Is it possible here to throw in a different model??? Or maybe this is just saying switch this proportion to the other class
       # If current frame is a shuffle frame, shuffle classes accordingly
       if self.is_shuffle_frame(i):
         self.classes = self.classes[class_shuffle_strength:] + \
@@ -619,19 +620,18 @@ class LucidSonicDream:
                 image = (image.permute(1, 2, 0) * 127.5 + 128).clamp(0, 255).to(torch.uint8).squeeze(0)
             array = np.array(image)
 
-            # Apply efects
+            # Apply effects
             for effect in self.custom_effects:
                 array = effect.apply_effect(array = array, 
                                             index = image_index)
 
-            final_image = Image.fromarray(array, 'RGB')
+            # final_image = Image.fromarray(array, 'RGB')
 
             # If resolution is provided, resize
             #if resolution:
             #    final_image = final_image.resize((resolution, resolution))
-            
-            np_final_image = np.array(final_image)
-            all_frames[frame_count] = np_final_image
+
+            all_frames[frame_count] = array
             frame_count += 1
         
         del image_batch
