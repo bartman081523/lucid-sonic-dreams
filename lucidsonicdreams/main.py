@@ -579,7 +579,7 @@ class LucidSonicDream:
         if len(all_frames) >= frame_batch_size:
             # if batch size met, frames write to disk, reset array 
             # Save. Include leading zeros in file name to keep alphabetical order
-          for f in tqdm(range(all_frames), position=0, leave=True):
+          for f in tqdm(range(len(all_frames)), position=0, leave=True):
             max_frame_index = num_frame_batches * batch_size + batch_size
             file_name = str(image_index)\
                     .zfill(len(str(max_frame_index)))
