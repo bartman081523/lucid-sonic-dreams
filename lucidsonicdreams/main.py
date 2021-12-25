@@ -549,10 +549,10 @@ class LucidSonicDream:
     file_name = self.file_name
     resolution = self.resolution
     batch_size = self.batch_size
+    frame_batch_size = self.frame_batch_size
+
     num_frame_batches = int(len(self.noise) / batch_size)
-
-    all_frames = np.empty(shape=[num_frame_batches, resolution, resolution, 3], dtype=np.uint8)
-
+  
     if self.use_tf:
         Gs_syn_kwargs = {'output_transform': {'func': self.convert_images_to_uint8, 
                                           'nchw_to_nhwc': True},
@@ -563,15 +563,30 @@ class LucidSonicDream:
 
     # Set-up temporary frame directory
     # Fixme: Save images to RAM
-    #self.frames_dir = file_name.split('.mp4')[0] + '_frames'
-    #if os.path.exists(self.frames_dir):
-    #    shutil.rmtree(self.frames_dir)
-    #os.makedirs(self.frames_dir)
+
+    if self.frame_batch_size != None:
+      self.frames_dir = file_name.split('.mp4')[0] + '_frames'
+      if os.path.exists(self.frames_dir):
+          shutil.rmtree(self.frames_dir)
+      os.makedirs(self.frames_dir)
+
+    all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Generate frames
     for i in tqdm(range(num_frame_batches), position=0, leave=True):
+        if len(all_frames) >= frame_batch_size:
+            # if batch size met, frames write to disk, reset array 
+            # Save. Include leading zeros in file name to keep alphabetical order
+          for f in tqdm(range(all_frames), position=0, leave=True):
+            max_frame_index = num_frame_batches * batch_size + batch_size
+            file_name = str(image_index)\
+                    .zfill(len(str(max_frame_index)))
+            final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
+
+          all_frames = np.empty(shape=[frame_batch_size, resolution, resolution, 3], dtype=np.uint8)
+
 
         # Obtain batches of Noise and Class vectors based on batch_size
         noise_batch = np.array(self.noise[i*batch_size:(i+1)*batch_size])
@@ -609,20 +624,12 @@ class LucidSonicDream:
             # If resolution is provided, resize
             if resolution:
                 final_image = final_image.resize((resolution, resolution))
-
-            # Save. Include leading zeros in file name to keep alphabetical order
-            #max_frame_index = num_frame_batches * batch_size + batch_size
-            #file_name = str(image_index)\
-            #        .zfill(len(str(max_frame_index)))
-            #final_image.save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
             
             np_final_image = np.array(final_image)
             all_frames[i] = np_final_image
         
         del image_batch
         del noise_batch
-        
-    print(all_frames.ndim)
     
     return all_frames
 
@@ -636,6 +643,7 @@ class LucidSonicDream:
                   duration: float = None, 
                   save_frames: bool = False,
                   batch_size: int = 1,
+                  frame_batch_size: int = None,
                   speed_fpm: int = 12,
                   pulse_percussive: bool = True,
                   pulse_harmonic: bool = False,
@@ -685,6 +693,7 @@ class LucidSonicDream:
                      else file_name + '.mp4'
     self.resolution = resolution
     self.batch_size = batch_size
+    self.frame_batch_size = frame_batch_size
     self.speed_fpm = speed_fpm
     self.pulse_react = pulse_react
     self.motion_react = motion_react 
