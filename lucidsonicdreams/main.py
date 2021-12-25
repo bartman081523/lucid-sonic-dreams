@@ -820,7 +820,7 @@ class LucidSonicDream:
       os.remove('tmp.mp4')
 
     # By default, delete temporary frames directory
-    if not save_frames: 
+    if not save_frames and not np.any(all_frames): 
       shutil.rmtree(self.frames_dir)
 
     del all_frames
