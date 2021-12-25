@@ -650,7 +650,6 @@ class LucidSonicDream:
                 .zfill(len(str(max_frame_index)))
         Image.fromarray(all_frames[f], 'RGB').save(os.path.join(self.frames_dir, file_name + '.jpg'), quality=95) #, subsample=0, quality=95)
 
-    if on_disk:
       return None
     
     return all_frames
