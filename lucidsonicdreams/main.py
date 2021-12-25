@@ -798,7 +798,7 @@ class LucidSonicDream:
     # Write temporary movie file
     print('\nGenerating movie...\n')
 
-    if all_frames == None: # If frames not passed back, then they're in folder
+    if np.any(all_frames): # If frames not passed back, then they're in folder
       imageio.mimwrite('tmp.mp4', all_frames, quality=8, fps=self.sr/self.frame_duration)
       video = mpy.VideoFileClip('tmp.mp4')
     else:
