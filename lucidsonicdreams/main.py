@@ -460,11 +460,12 @@ class LucidSonicDream:
       # Append Pulse and Motion update vectors to respective lists
       pulse_noise.append(pulse_noise_add)
       motion_noise.append(motion_noise_add)
-      cumm_motion_noise += motion_noise_add
+      
       # Update current noise vector by adding current Pulse vector and 
       # a cumulative sum of Motion vectors
       #noise[i] = noise[i] + pulse_noise_add + sum(motion_noise[:i+1])
       noise[i] = noise[i] + pulse_noise_add + cumm_motion_noise
+      cumm_motion_noise += motion_noise_add
       
       self.noise = noise
       self.current_noise = noise[i]
