@@ -434,7 +434,7 @@ class LucidSonicDream:
                              for n in range(self.input_shape)])
 
     
-
+    cumm_motion_noise = 0
     for i in range(len(self.spec_norm_class)):
 
       # UPDATE NOISE # 
@@ -463,7 +463,9 @@ class LucidSonicDream:
     
       # Update current noise vector by adding current Pulse vector and 
       # a cumulative sum of Motion vectors
-      noise[i] = noise[i] + pulse_noise_add + sum(motion_noise[:i+1])
+      #noise[i] = noise[i] + pulse_noise_add + sum(motion_noise[:i+1])
+      noise[i] = noise[i] + pulse_noise_add + cumm_motion_noise
+      cumm_motion_noise += noise[i]
       self.noise = noise
       self.current_noise = noise[i]
 
