@@ -814,7 +814,7 @@ class LucidSonicDream:
     audio = mpy.AudioFileClip('tmp.wav', fps = self.sr*2)
     
     video = video.set_audio(audio)
-    video.write_videofile(file_name,audio_codec='aac')
+    video.write_videofile(file_name, audio_codec='aac', audio_bitrate="1024k")
 
     # Delete temporary audio file
     os.remove('tmp.wav')
